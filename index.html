@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Institute Dashboard</title>
+<style>
+    /* CSS for dashboard layout */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex; /* Set display to flex for the body */
+    }
+    #dashboard {
+        padding: 20px;
+        flex: 1; /* Make the dashboard flex to take remaining space */
+    }
+    #submission-list {
+        border: 1px solid #ccc;
+        padding: 10px;
+        overflow-y: auto; /* Add vertical scroll if content overflows */
+    }
+    .submission-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+        position: relative; /* Set position to relative for positioning children elements */
+    }
+    .submission-item:hover {
+        background-color: #f0f0f0;
+    }
+    /* CSS for the action select button */
+    .action-select {
+        position: absolute;
+        top: 10px; /* Position from the top */
+        right: 10px; /* Position from the right */
+    }
+    /* CSS for box-shaped buttons */
+    .box-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 10px; /* Rounded corners */
+    }
+    /* CSS for logout button */
+    #logout-button {
+        position: absolute;
+        bottom: 20px; /* Position from the bottom */
+        right: 20px; /* Position from the right */
+        background-color: #f44336; /* Red color for logout button */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px; /* Rounded corners */
+    }
+</style>
+</head>
+<body>
+<div id="dashboard">
+    <h1>Institute Dashboard</h1>
+    <div id="submission-list">
+        <!-- Submission list will be populated dynamically -->
+    </div>
+</div>
+
+<div id="parallel-screen">
+    <!-- Content for the parallel screen part -->
+    <h2>Parallel Screen Part</h2>
+    <p>This is the content of the parallel screen part.</p>
+    <!-- Test Report button with link to another page -->
+    <a href="./s6.html" target="_blank">
+        <button class="box-button">Test Report</button>
+    </a>
+    <!-- Archive Files button -->
+    <button class="box-button" onclick="archiveFiles()">Archive Files</button>
+    <button class="box-button" onclick="Download()">Download</button>
+    <!-- Logout button -->
+    <button id="logout-button" onclick="logout()">Logout</button>
+</div>
+
+<script>
+    // Simulated data (replace this with actual data from your backend)
+    const submissions = [
+        {
+            id: 1,
+            customerName: "John Doe",
+            phoneNumber: "1234567890",
+            email: "johndoe@example.com",
+            villageTown: "Sample Village",
+            taluka: "Sample Taluka",
+            district: "Sample District",
+            tests: ["Concrete Compression", "Steel Tension"],
+            totalPrice: 2000,
+            uploadedFile: "sample_file.pdf",
+            status: "Received" // Initial status
+        },
+        {
+            id: 2,
+            customerName: "Jane Smith",
+            phoneNumber: "9876543210",
+            email: "janesmith@example.com",
+            villageTown: "Another Village",
+            taluka: "Another Taluka",
+            district: "Another District",
+            tests: ["Soil Bearing Capacity"],
+            totalPrice: 1000,
+            uploadedFile: "another_file.pdf",
+            status: "Working" // Initial status
+        }
+        // Add more simulated submissions as needed
+    ];
+
+    // Function to render submission list
+    function renderSubmissions() {
+        const submissionList = document.getElementById("submission-list");
+        submissionList.innerHTML = ""; // Clear previous content
+
+        submissions.forEach(submission => {
+            const submissionItem = document.createElement("div");
+            submissionItem.classList.add("submission-item");
+
+            // Construct submission item HTML
+            submissionItem.innerHTML = `
+                <strong>Customer Name:</strong> ${submission.customerName}<br>
+                <strong>Phone Number:</strong> ${submission.phoneNumber}<br>
+                <strong>Email:</strong> ${submission.email}<br>
+                <strong>Village/Town:</strong> ${submission.villageTown}<br>
+                <strong>Taluka:</strong> ${submission.taluka}<br>
+                <strong>District:</strong> ${submission.district}<br>
+                <strong>Tests:</strong> ${submission.tests.join(", ")}<br>
+                <strong>Total Price:</strong> Rs ${submission.totalPrice}<br>
+                <strong>Uploaded File:</strong> <a href="${submission.uploadedFile}" target="_blank">${submission.uploadedFile}</a><br>
+                <!-- Action select button -->
+                <select class="action-select" onchange="updateStatus(${submission.id}, this.value)">
+                    <option value="Received" ${submission.status === 'Received' ? 'selected' : ''}>Received</option>
+                    <option value="Working" ${submission.status === 'Working' ? 'selected' : ''}>Working</option>
+                    <option value="Certified" ${submission.status === 'Certified' ? 'selected' : ''}>Certified</option>
+                    <option value="Archive" ${submission.status === 'Archive' ? 'selected' : ''}>Archive</option>
+                </select>
+            `;
+
+            submissionList.appendChild(submissionItem);
+        });
+    }
+
+    // Initial rendering of submissions
+    renderSubmissions();
+
+    // Function to update status
+    function updateStatus(id, newStatus) {
+        const submission = submissions.find(sub => sub.id === id);
+        if (submission) {
+            submission.status = newStatus;
+            console.log(`Submission ${id} status updated to ${newStatus}`);
+        }
+    }
+
+    // Function to logout
+    function logout() {
+        // Implement logout logic here
+        console.log("Logout clicked");
+    }
+
+    // Function to archive files
+    function archiveFiles() {
+        console.log(`Archiving files`);
+        // Add your logic to archive the files
+    }
+</script>
+</body>
+</html>
